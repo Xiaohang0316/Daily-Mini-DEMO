@@ -4,7 +4,7 @@
 
 ## 运行环境
 
-<img src="\img\62494841-41A1-4e47-91B1-1590AE7CAE55.png" alt="62494841-41A1-4e47-91B1-1590AE7CAE55" style="float: left;" />
+<img src="./img/62494841-41A1-4e47-91B1-1590AE7CAE55.png" alt="62494841-41A1-4e47-91B1-1590AE7CAE55" style="float: left;" />
 
 ## Component
 

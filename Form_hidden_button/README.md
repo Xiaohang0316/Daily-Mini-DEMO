@@ -27,7 +27,7 @@
 
 (上图代码的效果)
 
-![clip_image001](.\clip_image001.gif)
+![Graphical user interface, text, application, chat or text message  Description automatically generated](./clip_image001.gif)
 
 当在input中敲击回车就会触发它旁边的button，如果一个form表单里有好几个button会导致所有的button同时被触发
 
