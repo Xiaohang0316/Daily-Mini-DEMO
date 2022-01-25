@@ -20,6 +20,8 @@
 
 ##### 5.angular 数据变更检测 onpush
 
+##### 6.js
+`reduce` Array 去重
 
 
 
