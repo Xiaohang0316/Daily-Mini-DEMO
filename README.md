@@ -23,6 +23,12 @@
 ##### 6.js
 `reduce` Array 去重
 
+#### 7.rxjs
+`audit`
+`auditTime`
+`take`
+`takeUntil`
+
 
 
 
