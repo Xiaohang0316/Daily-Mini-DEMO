@@ -22,13 +22,17 @@ export class RxjsTestComponent implements OnInit {
     //   .subscribe(console.log);
     //---------------------------------------------------------------------------------------------
     //audit
-    fromEvent(document, 'mousemove')
-      .pipe(audit((ev) => interval(1000)))
-      .subscribe((x) => console.log(new Date(), x));
+   range(1,3000)
+      .pipe(v=>interval(1000))
+      .pipe(audit(v=>interval(3000)))
+      .subscribe(x=>console.log(new Date(), x))
     //---------------------------------------------------------------------------------------------
     // auditTime;
-    // fromEvent(document, 'mousemove')
-    //   .pipe(auditTime(2000))
-    //   .subscribe((x) => console.log(new Date(), x));
+    // range(1,3000)
+    //   .pipe(v=>interval(1000))
+    //   .pipe(auditTime(3000))
+    //   .subscribe(x=>console.log(new Date(), x))
+
   }
+
 }

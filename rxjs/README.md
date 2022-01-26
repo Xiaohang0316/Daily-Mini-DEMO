@@ -5,34 +5,49 @@ RxJS 是一个库，它通过使用 observable 序列来编写异步和基于事
 
 ### audit和auditTime
 
+`audit`  `auditTime` 都可用于数据节流，差异在于`audit` 在由另一个 Observable 确定的持续时间内忽略源值
+
  #### audit
 
-###### 使用方法：audit((ev) => interval(1000))
+###### 使用方法：audit(v => interval(1000))
 
-###### 作用：只发送单位时间内最后一次(throttle)
+###### 作用：在由另一个 Observable 确定的持续时间内忽略源值，然后从源 Observable 发出最新值，然后重复此过程
 
 ###### 原理图
 <img src="./img/audit.png" style="zoom:33%;" />
 
+```ts
+   range(1,3000)
+      .pipe(v=>interval(1000))
+      .pipe(audit(v=>interval(3000)))
+      .subscribe(x=>console.log(new Date(), x))
+```
 
+
+
+###### 效果图
+<img src="./img/ReturnAudit"/>
 
  #### auditTime
 
 ###### 使用方法 auditTime(number)
 
-作用： 忽略源值`duration`毫秒，然后从源 Observable 发出最新值，然后重复此过程。（debounce）
+作用： 忽略源值`duration`毫秒，然后从源 Observable 发出最新值，然后重复此过程。
 
 ###### 原理图
 
 <img src="./img/auditTime.png"  style="zoom:33%;" />
 
 ```ts
-fromEvent(document, 'mousemove')
-      .pipe(auditTime(1000))
-      .subscribe(console.log);
+ range(1,3000)
+      .pipe(v=>interval(1000))
+      .pipe(auditTime(3000))
+      .subscribe(x=>console.log(new Date(), x))
 ```
 
+###### 效果图
 
+<img src="./img/ReturnAuditTime" />
 
 ### take和takeUntil
 
