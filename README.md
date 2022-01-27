@@ -23,11 +23,15 @@
 ##### 6.js
 `reduce` Array 去重
 
-#### 7.rxjs
+##### 7.rxjs
 `audit`
 `auditTime`
 `take`
 `takeUntil`
+##### 8.WSL
+适用于 Linux 的 Windows 子系统允许开发人员直接在 Windows 上运行 GNU/Linux 环境（包括大多数命令行工具、实用程序和应用程序），无需修改，无需传统虚拟机或双引导设置的开销
+https://docs.microsoft.com/en-us/windows/wsl/about
+
 
 
 
