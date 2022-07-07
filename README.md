@@ -31,11 +31,13 @@
 ##### 8.WSL
 适用于 Linux 的 Windows 子系统允许开发人员直接在 Windows 上运行 GNU/Linux 环境（包括大多数命令行工具、实用程序和应用程序），无需修改，无需传统虚拟机或双引导设置的开销
 https://docs.microsoft.com/en-us/windows/wsl/about
-##### 9.Git
+
+##### 9. Native Router & ui Router
+
+##### .Git
 git info exclude
 https://www.cnblogs.com/mafeng/p/7635228.html
 https://luisdalmolin.dev/blog/ignoring-files-in-git-without-gitignore/#:~:text=To%20ignore%20untracked%20files%2C%20you,tracking%20any%20(untracked)%20file.
-
 
 
 
