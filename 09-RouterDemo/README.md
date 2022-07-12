@@ -232,10 +232,20 @@ import { AppComponent, Page1, Page3, Page2 } from './app.component';// 导入组
 import { UIRouterModule } from "@uirouter/angular";// 导入 uirouter UIRouterModule 方法
 import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
-// 配置 页面 name URL 对应的组件 
+// UI router state
+// 
 const Page1State = { name: "Page1", url: "/Page1", component: Page1 };
 const Page2State = { name: "Page2", url: "/Page2", component: Page2 };
 const Page3State = { name: "Page3", url: "/Page3", component: Page3 };
+
+
+
+// imports: [ BrowserModule, UIRouterModule.forRoot({ ...
+// 允许您应用的模块使用来自另一个模块的代码。在此示例中，UIRouterModule.forRoot导入 UI-Router 模块，并注册列出的状态。
+// declarations: [ Page1, Page2, Page3 ]
+// 声明根模块中使用的所有组件。
+// bootstrap: [ AppComponent ]
+// 告诉 Angular 引导App组件作为应用程序的根。
 
 @NgModule({
   imports: [
