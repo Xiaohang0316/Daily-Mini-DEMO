@@ -141,7 +141,7 @@
 </html>
 ```
 
-#### ui-router
+#### angular js ui-router
 
 ui-router 为我们封装了一个独立的路由模块 ui-router ,它是一种靠状态 state 来驱动视图.
 
@@ -213,6 +213,112 @@ myApp.config(function ($stateProvider, $urlRouterProvider) {
         });
 });
 ```
+
+#### angular UI-router
+
+```ts
+// 所需插件版本
+"@uirouter/angular": "^9.1.0",
+"@uirouter/core": "^6.0.8",
+"@uirouter/rx": "^1.0.0",
+```
+
+​    ` app.module.ts`
+
+``` ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent, Page1, Page3, Page2 } from './app.component';// 导入组件模块
+import { UIRouterModule } from "@uirouter/angular";// 导入 uirouter UIRouterModule 方法
+import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
+
+// 配置 页面 name URL 对应的组件 
+const Page1State = { name: "Page1", url: "/Page1", component: Page1 };
+const Page2State = { name: "Page2", url: "/Page2", component: Page2 };
+const Page3State = { name: "Page3", url: "/Page3", component: Page3 };
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    UIRouterModule.forRoot({ states: [Page1State, Page2State, Page3State], useHash: true })
+  ],
+  declarations: [
+    AppComponent,
+    Page1, 
+    Page2,
+    Page3
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+platformBrowserDynamic().bootstrapModule(AppModule).then(ref => {
+  // 确保 Angular 在热重载时自行销毁。
+  if (window['ngRef']) {
+    window['ngRef'].destroy();
+  }
+  window['ngRef'] = ref;
+}).catch(err => console.error(err));
+
+```
+
+`app.component.html`
+
+```html
+
+//  每个标记都包含一个uiSref指令。uiSref指令是链接，类似于锚标记的href. 不是像 a href那样链接到 URL，而是uiSref链接到状态。
+// 单击时，链接状态被激活。该指令会根据您所在州的 urluiSref自动为您构建一个href属性 ( )。<a href=...></a>
+// 当uiSref链接到的状态为活动时，uiSrefActive会将activeCSS 类添加到链接
+<a uiSref="Page1" uiSrefActive="active">Page-1</a>
+<a uiSref="Page2" uiSrefActive="active">Page-2</a>
+<a uiSref="Page3" uiSrefActive="active">Page-3</a>
+
+// 此视口将填充当前活动状态的组件
+<ui-view></ui-view>
+```
+
+
+
+`app.component.ts`
+
+``` ts
+import { Component } from '@angular/core';
+
+// root app
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'uiRouterDemo';
+}
+// component 1
+@Component({
+  template: "<h3>Page-1</h3>"
+})
+export class Page1 {}
+
+// component 2 
+@Component({
+  template: "<h3>Page-2</h3>"
+})
+export class Page2 {}
+
+//component 3
+@Component({
+  template: "<h3>Page-3</h3>"
+})
+export class Page3 {}
+
+
+```
+
+
+
+
+
+
 
 
 
