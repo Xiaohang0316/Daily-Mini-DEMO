@@ -32,7 +32,7 @@
 适用于 Linux 的 Windows 子系统允许开发人员直接在 Windows 上运行 GNU/Linux 环境（包括大多数命令行工具、实用程序和应用程序），无需修改，无需传统虚拟机或双引导设置的开销
 https://docs.microsoft.com/en-us/windows/wsl/about
 
-##### 9. Native Router & ui Router
+##### 9. Native Router & angular ui Router & angular ui router
 
 ##### .Git
 git info exclude
