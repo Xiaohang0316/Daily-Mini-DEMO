@@ -105,7 +105,7 @@ Package                      Version
    ```
    
 3. 在项目的根目录下 创建 `server`文件夹
-	1. 创建 `template.hbs` template  
+   1. 创建 `template.hbs` template  
    
       创建要转换为 PDF 的 HTML 元素
    
@@ -203,16 +203,15 @@ Package                      Version
    
    
    3. 创建 `proxy.conf.json` 将前端的请求都转发到 server.js 中
-   
-   ```ts
-   {
-    "/api/*": {
-      "target": "http://localhost:3000",
-      "secure": false,
-      "logLevel": "debug"
-    }
-   }
-   ```
+        ```ts
+        {
+            "/api/*": {
+            "target": "http://localhost:3000",
+            "secure": false,
+            "logLevel": "debug"
+            }
+        }
+        ```
 
 以上就是angular PDF server 渲染完整流程
 
