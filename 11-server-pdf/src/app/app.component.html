@@ -1,0 +1,23 @@
+<div>
+    <h1>angular PDF server 渲染</h1>
+    <button (click)="downloadPdf()"> Export to PDF</button>
+    <div class="line">
+
+    </div>
+    <table id="list">
+        <thead>
+            <tr>
+                <th>名字</th>
+                <th>性别</th>
+                <th>年龄</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of data">
+                <td>{{ item.name }}</td>
+                <td>{{ item.gender }}</td>
+                <td>{{ item.age }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
