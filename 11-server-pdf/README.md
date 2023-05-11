@@ -184,12 +184,17 @@ Package                      Version
               html = compiledTemplate(data);
           });
           const puppeteer = require('puppeteer');
+          // 创建一个无头浏览器
           const browser = await puppeteer.launch();
+          // 创建一个新页面
           const page = await browser.newPage();
+          // 将 handlebars 生成的 html 放入浏览器中
           await page.setContent(html);
+          // 将当前页面 转化成 PDF buffer
           const pdfBuffer = await page.pdf({ format: 'A4' });
           res.setHeader('Content-Type', 'application/pdf');
           res.setHeader('Content-Disposition', 'attachment; filename="example.pdf"');
+          // 发送给前端
           res.send(pdfBuffer);
           // 关闭浏览器实例
           await browser.close();
@@ -212,6 +217,14 @@ Package                      Version
             }
         }
         ```
+        
+        
+        
+  在 package.json 中修改前端启动命令，增加server 启动命令
+  ```ts
+    "start": "ng serve --proxy-config proxy.conf.json",
+    "server": "node ./server/server.js"
+  ```
 
 以上就是angular PDF server 渲染完整流程
 
