@@ -15,8 +15,9 @@ export class AppComponent implements OnInit {
         age: string;
         gender: string;
     }[] = []
-
+    
     constructor(private http: HttpClient) { }
+    titleList: string[] = []
 
     ngOnInit() {
         this.getData();
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
     getData(): void {
         this.http.get('/api/data').subscribe((data: any) => {
             this.data = data.users;
+            this.titleList = Object.keys(this.data[0])
         });
     }
 
@@ -39,4 +41,8 @@ export class AppComponent implements OnInit {
           downloadLink.click();
         });
       }
+
+    getcloumName(index: any, item: any) {
+        return item[`cloum--${index}`]
+    }
 }

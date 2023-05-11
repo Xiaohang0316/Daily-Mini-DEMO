@@ -7,16 +7,12 @@
     <table id="list">
         <thead>
             <tr>
-                <th>名字</th>
-                <th>性别</th>
-                <th>年龄</th>
+                <th *ngFor="let item of titleList">{{item}}</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let item of data">
-                <td>{{ item.name }}</td>
-                <td>{{ item.gender }}</td>
-                <td>{{ item.age }}</td>
+                <td *ngFor="let item of data; let i = index">{{ getcloumName(i, item) }}</td>
             </tr>
         </tbody>
     </table>

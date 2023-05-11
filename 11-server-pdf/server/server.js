@@ -5,25 +5,22 @@ const templatePath = './server/template.hbs';
 // 创建一个Express应用程序
 const app = express();
 const port = 3000;
-const data = {
-    users: [
-        {
-            name: '张三',
-            age: '18',
-            gender: '男'
-        },
-        {
-            name: '李四',
-            age: '19',
-            gender: '男'
-        },
-        {
-            name: '王五',
-            age: '20',
-            gender: '女'
-        }
-    ]
+
+var json = [];
+for (var i = 0; i < 100; i++) {
+  var row = {};
+  for (var j = 0; j < 100; j++) {
+    var cellKey = 'cloum--' + j;  // 列的属性名
+    var cellValue = 'Cell ' + i + '-' + j;  // 列的值
+    row[cellKey] = cellValue;
+  }
+  json.push(row);
 }
+
+const data = {
+    users: json
+}
+data.cloumKey = Object.keys(data.users[0])
 // 设置路由处理程序
 app.get('/api/data', (req, res) => {
     res.json(data);

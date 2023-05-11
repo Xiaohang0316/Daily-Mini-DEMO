@@ -55,17 +55,17 @@
     <table id="list">
         <thead>
             <tr>
-                <th>名字</th>
-                <th>性别</th>
-                <th>年龄</th>
+                {{#each cloumKey}}
+                <th>{{this}}</th>
+                {{/each}}
             </tr>
         </thead>
         <tbody>
             {{#each users}}
             <tr>
-                <td>{{ name }}</td>
-                <td>{{ gender }}</td>
-                <td>{{ age }}</td>
+                {{#each this}}
+                <td>{{this}} {{[`cloum--${@index}`]}}</td>
+                {{/each}}
             </tr>
             {{/each}}
         </tbody>

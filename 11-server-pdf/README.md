@@ -228,5 +228,26 @@ Package                      Version
 
 以上就是angular PDF server 渲染完整流程
 
+#### 创建一个 100*100 的 table 表格
+这个方法可以生成一个 100 * 100 的 table 表格 json 数据 
+```ts
+var json = [];
+for (var i = 0; i < 100; i++) {
+  var row = {};
+  for (var j = 0; j < 100; j++) {
+    var cellKey = 'cloum--' + j;  // 列的属性名
+    var cellValue = 'Cell ' + i + '-' + j;  // 列的值
+    row[cellKey] = cellValue;
+  }
+  json.push(row);
+}
+```
+将这个 100*100 的 table 表格渲染在页面上
+#### 1. column 列数过多时如何分页
+
+
+#### 2. row 行数过多时如何分页
+
+
 
 
