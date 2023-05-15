@@ -132,7 +132,7 @@ init 时，从后端获取数据，并渲染到页面
           </table>
       </div>
         ```
-    
+   
    2. 创建 `server.js`
    
    当前端在请求`/api/pdf` 这个接口时，后端拿到当前页面渲染的数据，使用 `handlebars` 定义的 template 将数据转换为 HTML 格式，然后再使用 `puppeteer` 创建一个无头浏览器，创建空白页，将 `handlebars` 创建的 HTML 放进 浏览器中转换为 PDF 以`Buffer` 的格式传输给前端，传输完毕关闭 虚拟浏览器
@@ -254,9 +254,9 @@ init 时，从后端获取数据，并渲染到页面
 使用 `cutData` 方法将原有的 100 * 100 的数据分割成 五个 100 * 20 
 然后循环生成的数据依次放入 `handlebars` 的 template 中 ，去生成每页的 html
 拿到 html  使用 `puppeteer` 将其转化为 PDF 并保存在本地 创建一个数据将当前创建的 PDF name保存下来供后面PDF合并使用
-将分页的 PDF 全部生成完之后 使用 `pdf-lib` 把刚才生成的 PDF 合并成一个 效果图如下
+将分页的 PDF 全部生成完之后 使用 `pdf-lib` 把刚才生成的 PDF 合并成一个 
 
-![image-20230515101343629](./image-20230515101343629.png)
+
 
 ```ts
 app.get('/api/pdf', async (req, res) => {
@@ -285,7 +285,7 @@ app.get('/api/pdf', async (req, res) => {
           html = compiledTemplate(pdfData);
       });
       await page.setContent(html);
-      var pdfFileName =  'sample'+(i+1)+'.pdf';
+      var pdfFileName =  'sample'+(i)+'.pdf';
       await page.pdf({path: __dirname + pdfFileName,format: 'A4' });
       pdfFiles.push(pdfFileName);
     }
@@ -310,12 +310,18 @@ const mergePDF = async (sourceFiles) => {
     }
   }
   const pdfBytes = await pdfDoc.save()
-  fs.writeFileSync('samplefina555555l.pdf', pdfBytes)
+  fs.writeFileSync('merge.pdf', pdfBytes)
   return pdfBytes;
 }
 
 ```
+前端页面
 
+![image-20230515141317714](./image-20230515141317714.png)
+
+PDF 导出页面
+
+![image-20230515101343629](./image-20230515101343629.png)
 
 
 #### 1. column 列数过多时数据如何切分
@@ -343,7 +349,11 @@ const mergePDF = async (sourceFiles) => {
     }
 ```
 
-效果图如下
+前端页面 
+
+![image-20230515141057227](./image-20230515141057227.png)
+
+PDF 导出 页面
 
 ![image-20230515120141132](./image-20230515120141132.png)
 

@@ -5,7 +5,7 @@
 
     </div>
 
-    <!-- <table id="list">
+    <table id="list">
       <thead>
           <tr>
               <th *ngFor="let item of titleList">{{item}}</th>
@@ -16,8 +16,8 @@
               <td *ngFor="let item of items | keyvalue; let i = index">{{ item.value }}</td>
           </tr>
       </tbody>
-    </table> -->
-    <table *ngFor="let page of titleList; let pageIndex = index" id="list">
+    </table>
+    <!-- <table *ngFor="let page of titleList; let pageIndex = index" id="list">
         <thead>
             <tr>
                 <th *ngFor="let item of titleList[pageIndex]">{{item}}</th>
@@ -28,5 +28,5 @@
                 <td *ngFor="let item of items | keyvalue; let i = index">{{ item.value }}</td>
             </tr>
         </tbody>
-    </table>
+    </table> -->
 </div>

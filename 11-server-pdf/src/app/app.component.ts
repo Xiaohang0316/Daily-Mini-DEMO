@@ -21,9 +21,9 @@ export class AppComponent implements OnInit {
     }
     getData(): void {
         this.http.get('/api/data').subscribe((data: any) => {
-            // this.data = data.users;
-            // this.titleList = Object.keys(this.data[0])
-            this.data = this.cutData(data.users);
+            this.data = data.users;
+            this.titleList = Object.keys(this.data[0])
+            // this.data = this.cutData(data.users);
         });
     }
     // 写一个切数据的方法，将一个 50* 50的数据切成 十个 10 * 50的数据
