@@ -4,15 +4,28 @@
     <div class="line">
 
     </div>
-    <table id="list">
+
+    <!-- <table id="list">
+      <thead>
+          <tr>
+              <th *ngFor="let item of titleList">{{item}}</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let items of data">
+              <td *ngFor="let item of items | keyvalue; let i = index">{{ item.value }}</td>
+          </tr>
+      </tbody>
+    </table> -->
+    <table *ngFor="let page of titleList; let pageIndex = index" id="list">
         <thead>
             <tr>
-                <th *ngFor="let item of titleList">{{item}}</th>
+                <th *ngFor="let item of titleList[pageIndex]">{{item}}</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of data">
-                <td *ngFor="let item of data; let i = index">{{ getcloumName(i, item) }}</td>
+            <tr *ngFor="let items of data[pageIndex]">
+                <td *ngFor="let item of items | keyvalue; let i = index">{{ item.value }}</td>
             </tr>
         </tbody>
     </table>

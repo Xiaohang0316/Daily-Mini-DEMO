@@ -48,26 +48,35 @@
         height: 30px;
     }
 </style>
-<div>
+<div style='page-break-inside: avoid;'>
     <h1>angular PDF server 渲染</h1>
     <div class="line">
     </div>
-    <table id="list">
-        <thead>
-            <tr>
-                {{#each cloumKey}}
-                    <th>{{this}}</th>
-                {{/each}}
-            </tr>
-        </thead>
-        <tbody>
-            {{#each users}}
-            <tr>
+    {{#each cloumKey}}
+      <table id="list">
+          <thead>
+              <tr>
                 {{#each this}}
-                  <td>{{this}} {{[`cloum--${@index}`]}}</td>
+                  <th>{{this}}</th>
                 {{/each}}
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
+              </tr>
+          </thead>
+          <tbody>
+              {{#each users}}
+                <tr>
+                    {{#each this}}
+                    <td>{{this}}{{value}}</td>
+                    {{/each}}
+                </tr>
+              {{/each}}
+              <tr>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>3</td>
+                  <td>3</td>
+              </tr>
+          </tbody>
+      </table>
+    {{/each}}
 </div>

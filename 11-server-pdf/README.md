@@ -43,30 +43,28 @@ Package                      Version
        <h1>angular PDF server 渲染</h1>
        <button (click)="downloadPdf()"> Export to PDF</button>
        <div class="line">
+   
        </div>
        <table id="list">
            <thead>
                <tr>
-                   <th>名字</th>
-                   <th>性别</th>
-                   <th>年龄</th>
+                   <th *ngFor="let item of titleList">{{item}}</th>
                </tr>
            </thead>
            <tbody>
                <tr *ngFor="let item of data">
-                   <td>{{ item.name }}</td>
-                   <td>{{ item.gender }}</td>
-                   <td>{{ item.age }}</td>
+                   <td *ngFor="let item of data; let i = index">{{ getcloumName(i, item) }}</td>
                </tr>
            </tbody>
        </table>
    </div>
    ```
-
+   
    `app.component.ts`
    
-   init 时，从后端获取数据，并渲染到页面
-   
+
+init 时，从后端获取数据，并渲染到页面
+
    ```ts
    import { Component, OnInit } from '@angular/core';
    import { HttpClient } from '@angular/common/http';
@@ -103,110 +101,108 @@ Package                      Version
          }
    }
    ```
-   
+
 3. 在项目的根目录下 创建 `server`文件夹
    1. 创建 `template.hbs` template  
    
       创建要转换为 PDF 的 HTML 元素
    
         ```ts
-        <div>
-            <h1>angular PDF server 渲染</h1>
-            <table id="list">
-                <thead>
-                    <tr>
-                        <th>名字</th>
-                        <th>性别</th>
-                        <th>年龄</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each users}}
-                    <tr>
-                        <td>{{ name }}</td>
-                        <td>{{ gender }}</td>
-                        <td>{{ age }}</td>
-                    </tr>
-                    {{/each}}
-                </tbody>
-            </table>
-        </div>
-      ```
+      <div>
+          <h1>angular PDF server 渲染</h1>
+          <div class="line">
+          </div>
+          <table id="list">
+              <thead>
+                  <tr>
+                      {{#each cloumKey}}
+                      <th>{{this}}</th>
+                      {{/each}}
+                  </tr>
+              </thead>
+              <tbody>
+                  {{#each users}}
+                  <tr>
+                      {{#each this}}
+                      <td>{{this}} {{[`cloum--${@index}`]}}</td>
+                      {{/each}}
+                  </tr>
+                  {{/each}}
+              </tbody>
+          </table>
+      </div>
+        ```
+    
    2. 创建 `server.js`
+   
+   当前端在请求`/api/pdf` 这个接口时，后端拿到当前页面渲染的数据，使用 `handlebars` 定义的 template 将数据转换为 HTML 格式，然后再使用 `puppeteer` 创建一个无头浏览器，创建空白页，将 `handlebars` 创建的 HTML 放进 浏览器中转换为 PDF 以`Buffer` 的格式传输给前端，传输完毕关闭 虚拟浏览器
+   
+   导入 `handlebars` `express` `fs` 和创建好的 handlebars template
+   
+   ```ts
+   const express = require('express');
+   const handlebars = require('handlebars');
+   const fs = require('fs');
+   const templatePath = './server/template.hbs';
+   // 创建一个Express应用程序
+   const app = express();
+   const port = 3000;
+   // 创建一个 50 * 50 的 table 表格数据
+   const json = [];
+   for (var i = 0; i < 50; i++) {
+     var row = {};
+     for (var j = 0; j < 50; j++) {
+       var cellKey = 'cloum--' + j;  // 列的属性名
+       var cellValue = 'Cell ' + i + '-' + j;  // 列的值
+       row[cellKey] = cellValue;
+     }
+     json.push(row);
+   }
+   const data = {
+       users: json
+   }
+   // 设置路由处理程序
+   app.get('/api/data', (req, res) => {
+       res.json(data);
+   });
+   app.get('/api/pdf', async (req, res) => {
+       // 读取模板文件
+       let html;
+       fs.readFile(templatePath, 'utf8', (err, template) => {
+           if (err) {
+               console.error('Error reading template:', err);
+               // 处理错误
+               return;
+           }
+           // 编译模板
+           const compiledTemplate = handlebars.compile(template);
+           // 应用数据到模板
+           html = compiledTemplate(data);
+       });
+       const puppeteer = require('puppeteer');
+       // 创建一个无头浏览器
+       const browser = await puppeteer.launch();
+       // 创建一个新页面
+       const page = await browser.newPage();
+       // 将 handlebars 生成的 html 放入浏览器中
+       await page.setContent(html);
+       // 将当前页面 转化成 PDF buffer
+       const pdfBuffer = await page.pdf({ format: 'A4' });
+       res.setHeader('Content-Type', 'application/pdf');
+       res.setHeader('Content-Disposition', 'attachment; filename="example.pdf"');
+       // 发送给前端
+       res.send(pdfBuffer);
+       // 关闭浏览器实例
+       await browser.close();
+   });
+   // 启动服务器
+   app.listen(port, () => {
+       console.log(`Server listening on port ${port}`);
+   });
+   ```
 
-      当前端在请求`/api/pdf` 这个接口时，后端拿到当前页面渲染的数据，使用 `handlebars` 定义的 template 将数据转换为 HTML 格式，然后再使用 `puppeteer` 创建一个无头浏览器，创建空白页，将 `handlebars` 创建的 HTML 放进 浏览器中转换为 PDF 以`Buffer` 的格式传输给前端，传输完毕关闭 虚拟浏览器
    
-      导入 `handlebars` `express` `fs` 和创建好的 handlebars template
-   
-      ```ts
-      const express = require('express');
-      const handlebars = require('handlebars');
-      const fs = require('fs');
-      const templatePath = './server/template.hbs';
-      // 创建一个Express应用程序
-      const app = express();
-      const port = 3000;
-      const data = {
-          users: [
-              {
-                  name: '张三',
-                  age: '18',
-                  gender: '男'
-              },
-              {
-                  name: '李四',
-                  age: '19',
-                  gender: '男'
-              },
-              {
-                  name: '王五',
-                  age: '20',
-                  gender: '女'
-              }
-          ]
-      }
-      // 设置路由处理程序
-      app.get('/api/data', (req, res) => {
-          res.json(data);
-      });
-      app.get('/api/pdf', async (req, res) => {
-          // 读取模板文件
-          let html;
-          fs.readFile(templatePath, 'utf8', (err, template) => {
-              if (err) {
-                  console.error('Error reading template:', err);
-                  // 处理错误
-                  return;
-              }
-              // 编译模板
-              const compiledTemplate = handlebars.compile(template);
-              // 应用数据到模板
-              html = compiledTemplate(data);
-          });
-          const puppeteer = require('puppeteer');
-          // 创建一个无头浏览器
-          const browser = await puppeteer.launch();
-          // 创建一个新页面
-          const page = await browser.newPage();
-          // 将 handlebars 生成的 html 放入浏览器中
-          await page.setContent(html);
-          // 将当前页面 转化成 PDF buffer
-          const pdfBuffer = await page.pdf({ format: 'A4' });
-          res.setHeader('Content-Type', 'application/pdf');
-          res.setHeader('Content-Disposition', 'attachment; filename="example.pdf"');
-          // 发送给前端
-          res.send(pdfBuffer);
-          // 关闭浏览器实例
-          await browser.close();
-      });
-      // 启动服务器
-      app.listen(port, () => {
-          console.log(`Server listening on port ${port}`);
-      });
-      ```
-   
-   
-   
+
    3. 创建 `proxy.conf.json` 将前端的请求都转发到 server.js 中
         ```ts
         {
@@ -220,6 +216,7 @@ Package                      Version
         
         
         
+
   在 package.json 中修改前端启动命令，增加server 启动命令
   ```ts
     "start": "ng serve --proxy-config proxy.conf.json",
@@ -228,25 +225,128 @@ Package                      Version
 
 以上就是angular PDF server 渲染完整流程
 
-#### 创建一个 100*100 的 table 表格
-这个方法可以生成一个 100 * 100 的 table 表格 json 数据 
+#### 1. row 行数过多时如何分页
+
+这里有一个 5*100 的table 表格，规定每页只能显示 20 条数据通过分页处理
+
+1. 将 100 * 100 的 table data 切成 五个 100 * 20 数据
+
+   ```ts
+      function cutData(data) {
+            const pageSize = 20;
+            const listData = [];
+            const len = data.length;
+            const count = Math.ceil(len / pageSize);
+            const cloumKey = [];
+            for (let i = 0; i < count; i++) {
+              const start = i * pageSize;
+              const end = start + pageSize;
+              const arr = data.slice(start, end);
+              cloumKey.push(Object.keys(arr[0]))
+              listData.push(arr);
+            }
+            return { listData, cloumKey };
+      }
+   ```
+   
+2. 修改 `get('/api/pdf')` 方法
+
+使用 `cutData` 方法将原有的 100 * 100 的数据分割成 五个 100 * 20 
+然后循环生成的数据依次放入 `handlebars` 的 template 中 ，去生成每页的 html
+拿到 html  使用 `puppeteer` 将其转化为 PDF 并保存在本地 创建一个数据将当前创建的 PDF name保存下来供后面PDF合并使用
+将分页的 PDF 全部生成完之后 使用 `pdf-lib` 把刚才生成的 PDF 合并成一个 效果图如下
+
+![image-20230515101343629](./image-20230515101343629.png)
+
 ```ts
-var json = [];
-for (var i = 0; i < 100; i++) {
-  var row = {};
-  for (var j = 0; j < 100; j++) {
-    var cellKey = 'cloum--' + j;  // 列的属性名
-    var cellValue = 'Cell ' + i + '-' + j;  // 列的值
-    row[cellKey] = cellValue;
+app.get('/api/pdf', async (req, res) => {
+    // 读取模板文件
+    let html;
+    const puppeteer = require('puppeteer');
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    const pdfFiles=[];
+    const tableData = cutData(data.users);
+    console.log('%c [ tableData ]-39', 'font-size:13px; background:pink; color:#bf2c9f;', tableData)
+    for (let i = 0; i < tableData.cloumKey.length + 1; i++) {
+      fs.readFile(templatePath, 'utf8', (err, template) => {
+          if (err) {
+              console.error('Error reading template:', err);
+              // 处理错误
+              return;
+          }
+          // 编译模板
+          const compiledTemplate = handlebars.compile(template);
+          // 应用数据到模板
+          const pdfData = {
+            users: tableData.listData[i],
+            cloumKey: tableData.cloumKey[i]
+          }
+          html = compiledTemplate(pdfData);
+      });
+      await page.setContent(html);
+      var pdfFileName =  'sample'+(i+1)+'.pdf';
+      await page.pdf({path: __dirname + pdfFileName,format: 'A4' });
+      pdfFiles.push(pdfFileName);
+    }
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename="example.pdf"');
+    // 关闭浏览器实例
+    await browser.close();
+    const pdfBytes = await mergePDF(pdfFiles);
+    res.send(pdfBytes);
+
+});
+
+
+const mergePDF = async (sourceFiles) => {
+  const pdfDoc = await PDFDocument.create()
+  for(let i = 0;i<sourceFiles.length;i++) {
+    const localPath = __dirname + sourceFiles[i]
+    const PDFItem = await PDFDocument.load(fs.readFileSync(localPath))
+    for(let j = 0;j<PDFItem.getPageCount();j++) {
+      const [PDFPageItem] = await pdfDoc.copyPages(PDFItem, [j])
+      pdfDoc.addPage(PDFPageItem)
+    }
   }
-  json.push(row);
+  const pdfBytes = await pdfDoc.save()
+  fs.writeFileSync('samplefina555555l.pdf', pdfBytes)
+  return pdfBytes;
 }
+
 ```
-将这个 100*100 的 table 表格渲染在页面上
-#### 1. column 列数过多时如何分页
 
 
-#### 2. row 行数过多时如何分页
+
+#### 1. column 列数过多时数据如何切分
+
+一共 20列， 将每十列切成一个数组，使用上面的 `get('/api/pdf')` 方法进行渲染传输
+```ts
+    function cutData(data) {
+      const pageSize = 10;
+      const listData = [];
+      const columKey = Object.keys(data[0]);
+      const len = columKey.length;
+      const count = Math.ceil(len / pageSize);
+      const cloumKey = [];
+      for (let i = 0; i < count; i++) {
+        const start = i * pageSize;
+        const end = start + pageSize;
+        const arr = data.slice(start, end);
+        for (let j = 0; j < arr.length; j++) {
+          arr[j] = _.pick(arr[j], columKey.slice(start, end));
+        }
+        cloumKey.push(columKey.slice(start, end));
+        listData.push(arr);
+      }
+      return { listData, cloumKey };
+    }
+```
+
+效果图如下
+
+![image-20230515120141132](./image-20230515120141132.png)
+
 
 
 
