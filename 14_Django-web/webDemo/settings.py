@@ -124,4 +124,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 # SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_COOKIE_AGE = 3600
+SESSION_COOKIE_AGE = 10
