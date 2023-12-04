@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter Example</title>
+</head>
+<body>
+    <a href="{% url 'index2' %}">aaaa</a>
+    <h1>Counter Value: {{ counter }}</h1>
+    <form method="post" action="{% url 'index1' %}">
+        {% csrf_token %}
+        <button type="submit">Increment</button>
+    </form>
+</body>
+</html>

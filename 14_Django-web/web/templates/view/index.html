@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Django Web Frontend</title>
+</head>
+<body>
+    <h1>Welcome to my Django Web Frontend!</h1>
+    <a href="{% url 'index1' %}">aaa</a>
+    {% for obj in my_objects %}
+        <p>{{ obj.title }} - {{ obj.content }}</p>
+    {% endfor %}
+</body>
+</html>
