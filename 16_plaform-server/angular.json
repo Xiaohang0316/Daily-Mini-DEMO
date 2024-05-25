@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ssr-demo": {
+    "16_plaform-server": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ssr-demo/browser",
+            "outputPath": "dist/16_plaform-server",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ssr-demo:build:production"
+              "browserTarget": "16_plaform-server:build:production"
             },
             "development": {
-              "browserTarget": "ssr-demo:build:development"
+              "browserTarget": "16_plaform-server:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ssr-demo:build"
+            "browserTarget": "16_plaform-server:build"
           }
         },
         "test": {
@@ -97,66 +97,8 @@
             ],
             "scripts": []
           }
-        },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "dist/ssr-demo/server",
-            "main": "server.ts",
-            "tsConfig": "tsconfig.server.json",
-            "inlineStyleLanguage": "less"
-          },
-          "configurations": {
-            "production": {
-              "outputHashing": "media"
-            },
-            "development": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "sourceMap": true,
-              "extractLicenses": false,
-              "vendorChunk": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
-          "configurations": {
-            "development": {
-              "browserTarget": "ssr-demo:build:development",
-              "serverTarget": "ssr-demo:server:development"
-            },
-            "production": {
-              "browserTarget": "ssr-demo:build:production",
-              "serverTarget": "ssr-demo:server:production"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "prerender": {
-          "builder": "@nguniversal/builders:prerender",
-          "options": {
-            "routes": [
-              "/"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "ssr-demo:build:production",
-              "serverTarget": "ssr-demo:server:production"
-            },
-            "development": {
-              "browserTarget": "ssr-demo:build:development",
-              "serverTarget": "ssr-demo:server:development"
-            }
-          },
-          "defaultConfiguration": "production"
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "7b83a033-2903-42d3-9df8-0aca74781933"
   }
 }
