@@ -3,9 +3,10 @@ import 'zone.js/node';
 import { APP_BASE_HREF } from '@angular/common';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as express from 'express';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { AppServerModule } from './src/main.server';
+import { renderModule } from '@angular/platform-server';
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
@@ -15,26 +16,38 @@ export function app(): express.Express {
   console.log('[ ', existsSync(join(distFolder, 'index.original.html')) )
   const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
-  // Our Universal express-engine (found @ https://github.com/angular/universal/tree/main/modules/express-engine)
-  server.engine('html', ngExpressEngine({
-    bootstrap: AppServerModule
-  }));
-
-  server.set('view engine', 'html');
-  server.set('views', distFolder);
-
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
-  // Serve static files from /browser
-  server.get('*.*', express.static(distFolder, {
-    maxAge: '1y'
-  }));
-
-  // All regular routes use the Universal engine
-  server.get('*', (req, res) => {
-    console.log('[ indexHtml ] >', indexHtml)
-    res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
+  server.use(express.static(distFolder));
+  // 读取 Angular 应用的 index.html 文件
+  const renderHtml = readFileSync(join(distFolder, 'index.html'), 'utf8');
+  server.get('/renderModule', async (req, res) => {
+      // const html = '<div>ppp</div>'
+      const renderedHtml = await renderModule(AppServerModule, {
+          document: renderHtml,
+          url: req.url
+      });
+      res.status(200).send(renderedHtml);
   });
+
+  // Our Universal express-engine (found @ https://github.com/angular/universal/tree/main/modules/express-engine)
+//   server.engine('html', ngExpressEngine({
+//     bootstrap: AppServerModule
+//   }));
+
+//   server.set('view engine', 'html');
+//   server.set('views', distFolder);
+
+//   // Example Express Rest API endpoints
+//   // server.get('/api/**', (req, res) => { });
+//   // Serve static files from /browser
+//   server.get('*.*', express.static(distFolder, {
+//     maxAge: '1y'
+//   }));
+
+//   // All regular routes use the Universal engine
+//   server.get('*', (req, res) => {
+//     console.log('[ indexHtml ] >', indexHtml)
+//     res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
+//   });
 
   return server;
 }
