@@ -1,4 +1,4 @@
-### 
+<!-- ### 
 ```bash
 ng new 16_plaform-server
 
@@ -9,35 +9,41 @@ npm run dev:ssr
 node_modules/@nguniversal/express-engine
 
 node_modules/@angular/platform-server1
-```
+``` -->
 
-![alt text](image.png)
 
-四个常量
+
+<!-- 四个常量
 
 BEFORE_APP_SERIALIZED
 platformServer
 INITIAL_CONFIG
-VERSION
+VERSION -->
 
-两个Class
+#### platform-server 是什么
+是 Angular 中的一个模块，它提供了服务器端渲染（Server-Side Rendering，SSR）的支持。服务器端渲染是一种技术，用于在服务器上动态生成 HTML 页面，并将其发送给客户端，以便快速加载和显示内容，同时有助于搜索引擎优化（SEO）和提高性能。
+
+#### 都有些什么
+![alt text](image.png)
+
+
 
 PlatformState
 ServerModule
 
-三个 Function 
 
 renderApplication
 renderModule
 provideServerRendering
 
-一个 Interface
-PlatformConfig
+<!-- 一个 Interface
+PlatformConfig -->
 
 
 
 
 #### ServerModule
+将一些 angular 在 浏览器要到的东西重新引入到一个新的 Class 里并在后端应用这个 Class 就可调用在浏览器渲染页面的方法 
 
 ```ts
 import {BrowserModule} from '@angular/platform-browser';
@@ -82,6 +88,7 @@ export class PlatformState {
 
 
 #### renderModule
+使用模块化的 angular 应用实例，并将页面内容序列化为字符串
 
 ```ts
 // NgModule 使用 renderModule 
@@ -107,7 +114,7 @@ export class AppServerModule {}
 
 // 在 server.ts 中添加 使用 renderModule 渲染页面并返回给前端
     import { AppServerModule } from './src/main.server';
-    import { renderApplication, renderModule } from '@angular/platform-server';
+    import { renderModule } from '@angular/platform-server';
 
     // 读取打包好的 dist 中 静态文件
     const FOLDER = join(process.cwd(), 'dist/v18-ssr-demo/browser');
@@ -141,6 +148,7 @@ export async function renderModule<T>(
 
 
 #### renderApplication
+引导 angular 程序实例并将页面内容序列化为字符串
 ```ts
 // standalone  使用  renderApplication
 
@@ -212,6 +220,7 @@ export async function renderApplication<T>(
 
 
 #### provideServerRendering
+设置必要的 providers 程序以启用应用程序的服务器渲染功能。
 
 ```ts
 // standalone  中使用 provideServerRendering
@@ -242,7 +251,7 @@ provideServerRendering(): EnvironmentProviders {
 
 
 
-```text
+<!-- ```text
 
 在Angular框架中，NgModule（模块）是Angular应用程序的基础构建块，它将相关的组件、指令、服务和管道组织在一起。NgModule装饰器用于定义一个模块，它有几个重要的属性，包括exports、imports和providers。下面是每个属性的作用：
 
@@ -264,7 +273,7 @@ providers数组用于声明当前模块提供的服务。
 通过在模块中声明服务，Angular的依赖注入系统可以确保服务的单例模式，即在整个应用程序中只有一个服务实例。
 简而言之，imports用于导入其他模块的功能，exports用于公开当前模块的功能供其他模块使用，而providers用于提供服务，这些服务可以在整个应用程序中被注入和使用。
 
-```
+``` -->
 
 
 
