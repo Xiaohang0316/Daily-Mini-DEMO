@@ -275,6 +275,16 @@ providers数组用于声明当前模块提供的服务。
 
 ``` -->
 
+项目太大了,node 默认的内存不够用,编译不完就会爆栈
+
+NODE_OPTIONS=--max_old_space_size=12288 npm run dev:ssr
+
+因为使用了服务端渲染就会获取不到 document ,所以有用到 document 的包在编译的时候就会报错
+
+![alt text](image-1.png)
+
+<!-- ![alt text](image-2.png) -->
+
 
 
 
