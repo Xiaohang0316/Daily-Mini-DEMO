@@ -1,0 +1,6 @@
+// @import 'variables';
+@use 'variables' as v;
+
+body {
+  background-color: v.$primary-color;
+} 
