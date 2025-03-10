@@ -1,6 +1,22 @@
-// @import 'variables';
-@use 'variables' as v;
+// // @import 'variables';
+// @use 'variables' as v;
 
-body {
-  background-color: v.$primary-color;
-} 
+// body {
+//   background-color: v.$primary-color;
+// } 
+
+// @import 'colors';
+// @import 'theme';
+
+// body {
+//   background-color: $primary-color;
+// }
+
+
+
+// @import 'buttons';
+// @import 'components';
+
+
+@import 'button';
+@import 'card';

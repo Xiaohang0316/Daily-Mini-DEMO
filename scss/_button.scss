@@ -1,0 +1,6 @@
+@import 'variables';
+
+.button {
+  padding: $padding;
+  margin: 10px; // 手动覆盖，可能影响其他模块
+}
